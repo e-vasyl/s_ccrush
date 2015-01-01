@@ -1,78 +1,50 @@
-
-var HelloWorldLayer = cc.Layer.extend({
-    sprite:null,
-    ctor:function () {
-        //////////////////////////////
-        // 1. super init first
+var BoardLayer = cc.Layer.extend({
+    board:[],
+    
+    ctor:function(){
         this._super();
-
-        /////////////////////////////
-        // 2. add a menu item with "X" image, which is clicked to quit the program
-        //    you may modify it.
-        // ask the window size
-        var size = cc.winSize;
-
-        // add a "close" icon to exit the progress. it's an autorelease object
-        var closeItem = new cc.MenuItemImage(
-            res.CloseNormal_png,
-            res.CloseSelected_png,
-            function () {
-                cc.log("Menu is clicked!");
-            }, this);
-        closeItem.attr({
-            x: size.width - 20,
-            y: 20,
-            anchorX: 0.5,
-            anchorY: 0.5
-        });
-
-        var menu = new cc.Menu(closeItem);
-        menu.x = 0;
-        menu.y = 0;
-        this.addChild(menu, 1);
-
-        /////////////////////////////
-        // 3. add your codes below...
-        // add a label shows "Hello World"
-        // create and initialize a label
-        var helloLabel = new cc.LabelTTF("Hello World", "Arial", 38);
-        // position the label on the center of the screen
-        helloLabel.x = size.width / 2;
-        helloLabel.y = 0;
-        // add the label as a child to this layer
-        this.addChild(helloLabel, 5);
-
-        // add "HelloWorld" splash screen"
-        this.sprite = new cc.Sprite(res.HelloWorld_png);
-        this.sprite.attr({
-            x: size.width / 2,
-            y: size.height / 2,
-            scale: 0.5,
-            rotation: 180
-        });
-        this.addChild(this.sprite, 0);
-
-        this.sprite.runAction(
-            cc.sequence(
-                cc.rotateTo(2, 0),
-                cc.scaleTo(2, 1, 1)
-            )
-        );
-        helloLabel.runAction(
-            cc.spawn(
-                cc.moveBy(2.5, cc.p(0, size.height - 40)),
-                cc.tintTo(2.5,255,125,0)
-            )
-        );
+        
+        this.initBoard(5);
         return true;
-    }
+    },
+
+    posFromCoord:function(i, j){
+        return {
+            x: i*40 + 40,
+            y: j*40 + 40
+            };
+    },
+    
+    addCandy:function(clr, pos)
+    {
+        var candy = new cc.LabelTTF("*", "Arial", 146);
+        // position the label on the center of the screen
+        candy.x = pos.x;
+        candy.y = pos.y;
+        candy.color = clr;
+        // add the label as a child to this layer
+        this.addChild(candy, 0);        
+        return candy;
+    },
+    
+    initBoard:function(size){
+        this.board = [];
+        for (var i = 0; i<size; i++){
+            this.board.push([]);
+            for (var j = 0; j<size; j++){
+                var pos = this.posFromCoord(i, j);
+                var clr = cc.color(Math.random()*255, 128, 128);
+                this.board[i].push(this.addCandy(clr, pos));
+            }
+        }
+    },
+    
 });
 
 var HelloWorldScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
-        var layer = new HelloWorldLayer();
+        var layer = new BoardLayer();
         this.addChild(layer);
     }
 });
-
