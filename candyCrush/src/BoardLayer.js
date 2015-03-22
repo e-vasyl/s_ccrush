@@ -1,16 +1,3 @@
-var hoverHandler = cc.EventListener.create({
-    event: cc.EventListener.MOUSE,
-    
-    
-    onMouseMove: function (event) {
-      var target = event.getCurrentTarget();
-      var locationInNode = target.convertToNodeSpace(event.getLocation());
-      var idx = target.idxFromPos(locationInNode);
-      target.selectCell(locationInNode);
-      return true;
-  }
-});
-
 var BoardLayer = cc.Layer.extend({
     board:[],
     maxIdx:{i:0, j:0},
@@ -186,10 +173,3 @@ var BoardLayer = cc.Layer.extend({
     
 });
 
-var HelloWorldScene = cc.Scene.extend({
-    onEnter:function () {
-        this._super();
-        var layer = new BoardLayer();
-        this.addChild(layer);
-    }
-});

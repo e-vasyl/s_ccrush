@@ -12,6 +12,8 @@
 
     "jsList" : [
         "src/resource.js",
+        "src/BoardLayer.js",
+        "src/MouseHandler.js",
         "src/app.js"
     ]
 }
